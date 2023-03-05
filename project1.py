@@ -1,31 +1,21 @@
 import csv
-
-# csv.writer
-
-# baselight = open("Baselight_export.txt", "r")
-# xytech = open("Xytech.txt", "r")
+import re # for regex
 
 with open('Xytech.txt') as xytech:
-    for _ in range(2):
+    for _ in range(2): # skip first two lines
         next(xytech)
     producer = xytech.readline()
     operator = xytech.readline()
     job = xytech.readline()
-    for line in xytech:
+    for line in xytech: # last line has notes
         pass
     notes = line
 
-print(f"{producer}\n{operator}\n{job}\n{notes}")
+# Sanitize input:
+producer = producer.split(': ')[1]
+operator = operator.split(': ')[1]
+job = job.split(': ')[1]
 
-
-
-# string_baselight = baselight.read()
-# string_xytech = xytech.read()
-
-# print("---------- BASELIGHT REPORT ----------")
-# print(string_baselight)
-# print("---------- XYTECH REPORT ----------")
-# print(string_xytech)
 
 ''' 
 Get the problem frames from the baselight export, and spit out a list 
@@ -48,7 +38,7 @@ with open('frame_fixes.csv', 'w', newline='') as file:
      writer = csv.writer(file)
      
      writer.writerow(["Producer", "Operator", "Job", "Notes"])
-     #writer.writerow([producer_name, operator_name, job_type, job_notes])
+     writer.writerow([producer, operator, job, notes])
      writer.writerow(["Location", "Frame(s)"])
 
 # baselight.close()
