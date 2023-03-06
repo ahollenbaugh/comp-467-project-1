@@ -11,12 +11,10 @@ with open('Xytech.txt') as xytech:
     producer = xytech.readline()
     operator = xytech.readline()
     job = xytech.readline()
-    for line in xytech: # last line has notes
+    for line in xytech: # get directories
         if(re.search("/hpsans", line)):
             xytech_directories.append(line.rstrip()) # rstrip() removes newline char from the end
-    notes = line
-
-print(xytech_directories)
+    notes = line # last line has notes 
 
 # Sanitize input:
 producer = producer.split(': ')[1]
@@ -49,10 +47,17 @@ for subdir in frame_dictionary:
     frame_dictionary[subdir].sort()
 
 # if subdirectory in readline then print that readline directory
-print(frame_dictionary)
+# print(frame_dictionary)
 
-# If a Xytech directory contains a Baselight subdirectory, output that Xytech directory to the csv file:
+# If a Xytech directory contains a Baselight subdirectory, replace with Xytech directory in frame_dictionary:
+final_dict = dict()
+for baselight_dir in frame_dictionary:
+    for xytech_dir in xytech_directories:
+        if(re.search(baselight_dir, xytech_dir)):
+            final_dict[xytech_dir] = frame_dictionary[baselight_dir]
+            # basically, make a copy frame_dictionary, but use the Xytech directories instead of the Baselight ones
 
+print(final_dict)
 
 # Write results to csv file:
 with open('frame_fixes.csv', 'w', newline='') as file:
