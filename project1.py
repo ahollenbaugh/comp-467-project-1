@@ -46,9 +46,6 @@ baselight.close()
 for subdir in frame_dictionary:
     frame_dictionary[subdir].sort()
 
-# if subdirectory in readline then print that readline directory
-# print(frame_dictionary)
-
 # If a Xytech directory contains a Baselight subdirectory, replace with Xytech directory in frame_dictionary:
 final_dict = dict()
 for baselight_dir in frame_dictionary:
@@ -57,17 +54,17 @@ for baselight_dir in frame_dictionary:
             final_dict[xytech_dir] = frame_dictionary[baselight_dir]
             # basically, make a copy of frame_dictionary, but use the Xytech directories instead of the Baselight ones
 
-# print(final_dict)
-
 # Write results to csv file:
 with open('frame_fixes.csv', 'w', newline='') as file:
-     writer = csv.writer(file)
+    writer = csv.writer(file)
+    writer.writerow(["Producer", "Operator", "Job", "Notes"])
+    writer.writerow([producer, operator, job, notes])
+    writer.writerow([" "])
+    writer.writerow(["Location", "Frame(s)"])
 
-     writer.writerow(["Producer", "Operator", "Job", "Notes"])
-     writer.writerow([producer, operator, job, notes])
-     writer.writerow([""])
-     writer.writerow(["Location", "Frame(s)"])
-     for dir in final_dict:
-        writer.writerow([dir, final_dict[dir]])
+    for dir in final_dict:
+        for frame in final_dict[dir]:
+            writer.writerow([dir, frame])
+    
 
 print()
