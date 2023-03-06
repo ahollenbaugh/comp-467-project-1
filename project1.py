@@ -55,15 +55,19 @@ for baselight_dir in frame_dictionary:
     for xytech_dir in xytech_directories:
         if(re.search(baselight_dir, xytech_dir)):
             final_dict[xytech_dir] = frame_dictionary[baselight_dir]
-            # basically, make a copy frame_dictionary, but use the Xytech directories instead of the Baselight ones
+            # basically, make a copy of frame_dictionary, but use the Xytech directories instead of the Baselight ones
 
-print(final_dict)
+# print(final_dict)
 
 # Write results to csv file:
 with open('frame_fixes.csv', 'w', newline='') as file:
      writer = csv.writer(file)
+
      writer.writerow(["Producer", "Operator", "Job", "Notes"])
      writer.writerow([producer, operator, job, notes])
+     writer.writerow([""])
      writer.writerow(["Location", "Frame(s)"])
+     for dir in final_dict:
+        writer.writerow([dir, final_dict[dir]])
 
 print()
